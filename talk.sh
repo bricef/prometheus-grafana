@@ -32,7 +32,7 @@ kubectl apply -f config/kubernetes/deployment-grafana.yaml
 kubectl apply -f config/kubernetes/service-grafana.yaml
 
 #  8. Create a new configuration for prometheus
-kubectl create configmap prometheus-config --from-file=prometheus.yml=config/prometheus/prometheus.yml --dry-run -o yaml | kubectl apply -f -
+kubectl create configmap prometheus-configmap --from-file=prometheus.yml=config/prometheus/prometheus.yml --dry-run -o yaml | kubectl apply -f -
 
 #  9. Mount the new configmap to the deployment's pod
 cat >> config/kubernetes/deployment-prometheus.yaml
@@ -47,9 +47,12 @@ cat >> config/kubernetes/deployment-prometheus.yaml
 #  10. Re-apply the config to the deployment
 kubectl apply -f config/kubernetes/deployment-prometheus.yaml
 
-
+# Create teh sock-shop namespace
+kubectl create namespace sock-shop
 
 # 11. Deploy the sock shop
 kubectl apply -f https://github.com/microservices-demo/microservices-demo/raw/master/deploy/kubernetes/complete-demo.yaml
 
+# Open the sock shop front end in browser
+open http://$(minikube ip):30001
 
